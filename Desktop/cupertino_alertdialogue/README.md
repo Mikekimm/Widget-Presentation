@@ -1,55 +1,24 @@
-# Cupertino Alert Dialog Demo 🍎
+Cupertino AlertDialog is a widget that shows the user that they need to make an essential decision.
 
-A Flutter demo app showcasing the elegant CupertinoAlertDialog widget with iOS-style alert dialogs.
+This app shows the use of Cupertino AlertDialog in an account setting where the user can delete their account.
 
-## 📱 What This App Does
+How to run it:
+git clone 
+cd cupertiono_alertdialogue
+Install the dependencies
+Run the app using flutter run
 
-This app demonstrates a real-world use case of CupertinoAlertDialog in an account settings screen where users can delete their account. The dialog follows Apple's Human Interface Guidelines for a native iOS feel.
+Three Key Attributes of CupertinoAlertDialogue include:
+Title - This is the bold message at the top. (Delete Account)
+Content - It explains that deleting an account is permanent and that it cannot be undone once done. This helps the user understand the consequences before deleting their account.
+Action - These are buttons at the bottom which include ‘cancel’ if they changed their mind and ‘delete’ if they still want to go through with it.
 
-## 🚀 How to Run
+Screenshot of the final UI
 
-1. **Clone or download** this repository
-2. **Navigate** to the project directory:
-   ```bash
-   cd cupertino_alertdialogue
-   ```
-3. **Install dependencies**:
-   ```bash
-   flutter pub get
-   ```
-4. **Run the app**:
-   ```bash
-   flutter run
-   ```
+![Cupertino Alert Dialog Demo](screenshot.png)
 
-## 🎯 Key CupertinoAlertDialog Attributes
-
-The demo highlights three essential attributes of the CupertinoAlertDialog widget:
-
-- **`title`** - The bold heading text that immediately tells users what the dialog is about
-- **`content`** - The main message body that provides detailed information or warnings
-- **`actions`** - Interactive buttons (Cancel/Delete) that allow users to make decisions
-
-## 📸 App Preview
-
-<!-- Screenshot will be added here -->
-*Screenshot showing the account settings screen with the Cupertino alert dialog in action*
-
-## 🛠️ Built With
-
-- **Flutter** - UI framework
-- **CupertinoAlertDialog** - iOS-style alert dialogs
-- **Material Design** - Base app structure
-- **Dart** - Programming language
-
-## 💡 Learning Highlights
-
-This demo teaches you how to:
-- Implement native iOS-style dialogs in Flutter
-- Handle user confirmations for destructive actions
-- Combine Material and Cupertino design systems
-- Provide user feedback with SnackBar messages
-
----
-
-*Made with ❤️ for learning Flutter UI components*
+I built the app using:
+Flutter which is the UI framework
+Cupertino AlertDialogue the IOS style alert dialog
+Material Design for the basic app structure
+Dart which is the programming language
