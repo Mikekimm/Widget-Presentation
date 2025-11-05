@@ -26,6 +26,74 @@ lib/
 └── widgets/         # Reusable UI components
 ```
 
+## Architecture Diagram
+
+Here's how everything connects in the app:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         UI Layer (Screens)                       │
+│  Login → Home → Browse Books → Book Details → Request Swap      │
+│   ↓        ↓         ↓              ↓               ↓            │
+│  Consumer  Consumer  Consumer    Consumer       Consumer        │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                  State Management (Provider)                     │
+│                                                                  │
+│  AuthProvider → Manages user authentication & sessions          │
+│  BookProvider → Handles book CRUD operations                    │
+│  SwapProvider → Tracks swap requests & statuses                 │
+│  SettingsProvider → Stores user preferences                     │
+│                                                                  │
+│  Each provider uses notifyListeners() to update the UI          │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                    Services Layer                                │
+│                                                                  │
+│  AuthService → signIn(), signUp(), sendEmailVerification()      │
+│  BookService → createBook(), updateBook(), deleteBook()         │
+│  StorageService → uploadBookCover(), deleteImage()              │
+│  SwapService → createSwapRequest(), acceptSwap()                │
+│  ChatService → sendMessage(), getMessages()                     │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                         Firebase                                 │
+│                                                                  │
+│  Authentication → User login/signup with email verification     │
+│  Firestore → Real-time database for books, users, swaps, chats  │
+│  Storage → Book cover images (compressed, optimized)            │
+│                                                                  │
+│  Real-time listeners keep UI in sync with database changes      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Data Flow Example (Creating a Book):
+
+```
+User taps "Post Book" button
+       ↓
+AddBookScreen captures input
+       ↓
+Calls BookProvider.createBook()
+       ↓
+BookProvider calls BookService.createBook()
+       ↓
+BookService uploads image to Firebase Storage
+       ↓
+BookService saves book data to Firestore
+       ↓
+Firestore triggers real-time listener
+       ↓
+BookProvider.notifyListeners() called
+       ↓
+All Consumer<BookProvider> widgets rebuild
+       ↓
+Book appears on Home & My Listings screens automatically!
+```
+
 ## State Management - Why I Chose Provider
 
 I went with **Provider** for managing state in this app. Here's why:
