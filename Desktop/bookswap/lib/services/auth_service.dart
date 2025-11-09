@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 
 // Using print statements here for debugging during development.
-// They make it easier to track what's happening with Firebase auth
+
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

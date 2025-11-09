@@ -19,8 +19,8 @@ class StorageService {
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final fileName = 'book_covers/${user.uid}_${timestamp}.jpg';
 
-      print('📤 Uploading image to: $fileName');
-      print('📤 Image size: ${(imageBytes.length / 1024).toStringAsFixed(2)} KB');
+      print('Uploading image to: $fileName');
+      print('Image size: ${(imageBytes.length / 1024).toStringAsFixed(2)} KB');
 
       // Create reference to Firebase Storage location
       final storageRef = _storage.ref().child(fileName);
@@ -35,11 +35,16 @@ class StorageService {
         },
       );
 
-      // Upload the image
+      // Upload the image with timeout
       final uploadTask = storageRef.putData(imageBytes, metadata);
 
-      // Wait for upload to complete
-      final snapshot = await uploadTask;
+      // Wait for upload to complete with 30 second timeout
+      final snapshot = await uploadTask.timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          throw Exception('Image upload timed out. Please check your internet connection and try again.');
+        },
+      );
       
       // Get the download URL
       final downloadUrl = await snapshot.ref.getDownloadURL();
@@ -70,9 +75,9 @@ class StorageService {
 
       final storageRef = _storage.refFromURL(imageUrl);
       await storageRef.delete();
-      print('🗑️ Image deleted: $imageUrl');
+      print(' Image deleted: $imageUrl');
     } catch (e) {
-      print('⚠️ Failed to delete image: $e');
+      print(' Failed to delete image: $e');
     
     }
   }

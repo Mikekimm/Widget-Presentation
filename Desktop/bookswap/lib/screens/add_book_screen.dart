@@ -60,7 +60,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
     if (_formKey.currentState!.validate()) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final bookProvider = Provider.of<BookProvider>(context, listen: false);
-      final storageService = StorageService();
 
       print('📖 AddBookScreen: Checking auth state...');
       print('📖 AddBookScreen: Auth provider user: ${authProvider.user?.email ?? "NULL"}');
@@ -79,46 +78,14 @@ class _AddBookScreenState extends State<AddBookScreen> {
       print('AddBookScreen: User authenticated - ${authProvider.user!.email}');
       print('📖 AddBookScreen: Creating book for user: ${authProvider.user!.uid}');
 
-      // Upload image to Firebase Storage if selected
-      String imageUrl = '';
+      // Use placeholder book cover image
+      String imageUrl = 'https://placehold.co/400x600/34495e/ffffff?text=Book+Cover';
+      
+      // Clear image bytes from memory if user selected one
       if (_imageBytes != null) {
-        try {
-          print('📸 AddBookScreen: Uploading image to Firebase Storage...');
-          
-          // Show uploading message
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Uploading image... Please wait'),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          }
-          
-          imageUrl = await storageService.uploadBookCover(
-            _imageBytes!,
-            _titleController.text.trim(),
-          );
-          
-          print('AddBookScreen: Image uploaded successfully');
-          
-          // Clear image bytes from memory to prevent lag
-          setState(() {
-            _imageBytes = null;
-          });
-        } catch (e) {
-          print('AddBookScreen: Image upload failed: $e');
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Image upload failed: ${e.toString()}'),
-                backgroundColor: Colors.red,
-                duration: const Duration(seconds: 5),
-              ),
-            );
-          }
-          return; // Don't proceed if image upload fails
-        }
+        setState(() {
+          _imageBytes = null;
+        });
       }
 
       final book = BookModel(
