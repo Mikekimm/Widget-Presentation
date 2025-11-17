@@ -8,6 +8,10 @@ class UserEntity extends Equatable {
   final String profession;
   final String location;
   final String? profileImageUrl;
+  final int followersCount;
+  final int followingCount;
+  final int postsCount;
+  final bool isVerified;
 
   const UserEntity({
     required this.id,
@@ -17,6 +21,10 @@ class UserEntity extends Equatable {
     required this.profession,
     required this.location,
     this.profileImageUrl,
+    this.followersCount = 0,
+    this.followingCount = 0,
+    this.postsCount = 0,
+    this.isVerified = false,
   });
 
   @override
@@ -28,5 +36,9 @@ class UserEntity extends Equatable {
         profession,
         location,
         profileImageUrl,
+        followersCount,
+        followingCount,
+        postsCount,
+        isVerified,
       ];
 }

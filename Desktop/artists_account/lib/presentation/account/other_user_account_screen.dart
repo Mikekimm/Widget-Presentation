@@ -33,7 +33,7 @@ class OtherUserAccountScreen extends StatelessWidget {
           username: 'Jean Claude Niyonsenga',
           userProfileImage: '',
           caption: 'Just finished this sculpture inspired by Rwandan heritage. Feedback appreciated!',
-          mediaUrls: ['https://picsum.photos/seed/sculpture/600/400'],
+          mediaUrls: ['assets/images/african_woman_portrait.png'],
           tags: ['#sculpture', '#heritage'],
           isFollowing: false,
         ),
@@ -56,7 +56,7 @@ class OtherUserAccountScreen extends StatelessWidget {
           username: 'Grace Uwase',
           userProfileImage: '',
           caption: 'New digital art series exploring urban Kigali. Thoughts?',
-          mediaUrls: ['https://picsum.photos/seed/digital/600/400'],
+          mediaUrls: ['assets/images/house_with_tree.png'],
           tags: ['#digitalart', '#kigali'],
           isFollowing: false,
         ),
@@ -66,7 +66,7 @@ class OtherUserAccountScreen extends StatelessWidget {
           username: 'Grace Uwase',
           userProfileImage: '',
           caption: 'Collaborating with local musicians for an art installation. Excited!',
-          mediaUrls: ['https://picsum.photos/seed/collab/600/400'],
+          mediaUrls: ['assets/images/birds_sunset.png'],
           tags: ['#collaboration', '#installation'],
           isFollowing: false,
         ),
@@ -89,7 +89,7 @@ class OtherUserAccountScreen extends StatelessWidget {
           username: 'Samuel Mugisha',
           userProfileImage: '',
           caption: 'Street photography series capturing everyday moments in Kigali.',
-          mediaUrls: ['https://picsum.photos/seed/street/600/400'],
+          mediaUrls: ['assets/images/orange_rocks.png'],
           tags: ['#photography', '#street'],
           isFollowing: false,
         ),
@@ -99,7 +99,7 @@ class OtherUserAccountScreen extends StatelessWidget {
           username: 'Samuel Mugisha',
           userProfileImage: '',
           caption: 'Portrait session with local artisans. Their stories inspire me.',
-          mediaUrls: ['https://picsum.photos/seed/portrait/600/400'],
+          mediaUrls: ['assets/images/starry_night_river.png'],
           tags: ['#portrait', '#artisan'],
           isFollowing: false,
         ),
@@ -112,7 +112,7 @@ class OtherUserAccountScreen extends StatelessWidget {
           username: 'Diane Iradukunda',
           userProfileImage: '',
           caption: 'Fashion design inspired by traditional imigongo patterns.',
-          mediaUrls: ['https://picsum.photos/seed/fashion/600/400'],
+          mediaUrls: ['assets/images/colorful_abstract_strokes.png'],
           tags: ['#fashion', '#imigongo'],
           isFollowing: false,
         ),
@@ -179,7 +179,9 @@ class OtherUserAccountView extends StatelessWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.menu),
-              onPressed: () {},
+              onPressed: () {
+                _showOptionsMenu(context);
+              },
             ),
           ],
         ),
@@ -417,11 +419,21 @@ class OtherUserAccountView extends StatelessWidget {
               ),
             ),
           if (post.mediaUrls.isNotEmpty)
-            Image.network(
+            Image.asset(
               post.mediaUrls.first,
               width: double.infinity,
               height: 250,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: double.infinity,
+                  height: 250,
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: Icon(Icons.broken_image, size: 50, color: Colors.grey),
+                  ),
+                );
+              },
             ),
           Padding(
             padding: const EdgeInsets.all(12),
@@ -484,6 +496,103 @@ class OtherUserAccountView extends StatelessWidget {
   Widget _buildMediaGrid() {
     return const Center(
       child: Text('Media view - Coming soon'),
+    );
+  }
+
+  void _showOptionsMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.share, color: Colors.blue),
+              title: const Text('Share Profile'),
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Sharing $name\'s profile')),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.block, color: Colors.orange),
+              title: const Text('Block User'),
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Block User'),
+                    content: Text('Are you sure you want to block $name?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('$name has been blocked'),
+                              backgroundColor: Colors.orange,
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                        ),
+                        child: const Text('Block'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.report, color: Colors.red),
+              title: const Text('Report User'),
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Report User'),
+                    content: Text('Report $name for inappropriate content?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Report submitted. Thank you!'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Report'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

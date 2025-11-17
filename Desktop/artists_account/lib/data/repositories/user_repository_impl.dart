@@ -15,6 +15,10 @@ class UserRepositoryImpl implements UserRepository {
       profession: 'Painter',
       location: 'Kigali',
       profileImageUrl: null,
+      followersCount: 2547,
+      followingCount: 342,
+      postsCount: 156,
+      isVerified: true,
     );
   }
 
